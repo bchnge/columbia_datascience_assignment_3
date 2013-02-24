@@ -3,6 +3,12 @@ import scipy as sp
 import pandas as pd
 from pandas import Series, DataFrame
 from numpy import linalg
+from numpy import maximum
+from numpy import dot
+from numpy import transpose
+from numpy import multiply
+from numpy import newaxis
+#from numpy import wrap
 
 import homework_03.src.utils as utils
 
@@ -57,8 +63,9 @@ def _solve_direct_inv(X, Y, delta=0):
     -----
     Uses numpy's linalg module to do the inversion.
     """
-    pass
-
+    
+    matrix_to_invert = X.T.dot(X) + delta*np.eye(X.shape[1])
+    return (linalg.inv(matrix_to_invert).dot(X.T)).dot(Y)
 
 def _solve_pinv(X, Y, cutoff=0):
     """
@@ -72,7 +79,9 @@ def _solve_pinv(X, Y, cutoff=0):
         Don't try to invert singular dimensions associated with singular
         values less than or equal to cutoff times the maximal singular value.
     """
-    pass
+    
+    return _get_pinv(X,cutoff).dot(Y)
+    #pass
 
 
 def _get_pinv(X, cutoff):
@@ -88,9 +97,36 @@ def _get_pinv(X, cutoff):
     being returned, and cutoff == 0 should result in the pseudo inverse.
     """
     # Get the svd.  Hint: You can set full_matrices=False.
-
+    U, s, V = np.linalg.svd(X, full_matrices=False)
+  
     # Form S_inv, which has 1/S[i] for it's ii entry (provided this entry
     # does not get cut off.
+    """
+    sigmas = []
 
+    for sigma in s:
+        if abs(sigma)>cutoff:
+            sigmas.append(sigma)
+
+  #  print sigmas
+    sigmasnp=np.array(sigmas)
+    S_inv=np.diag(1/sigmasnp)
+
+    #return linalg.pinv(X,cutoff)
+#    print S_inv
+ #   print V.T[0:S_inv.shape[0]]
     # Form the pseudoinverse
-    pass
+    return V.T[0:S_inv.shape[0]].dot(S_inv).dot(U.T[0:S_inv.shape[0]])
+
+    #pass
+    """
+    m = U.shape[0]
+    n = V.shape[1]
+    cutoff = cutoff*maximum.reduce(s)
+    for i in range(min(n, m)):
+        if s[i] > cutoff:
+            s[i] = 1./s[i]
+        else:
+            s[i] = 0.;
+    res = dot(transpose(V), multiply(s[:, newaxis],transpose(U)))
+    return (res)
