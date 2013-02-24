@@ -24,7 +24,14 @@ def get_corr_matrix(K, corr_len):
     #cov_error = utils.get_relative_error(sigma, sp.cov(X.T))
 
     # Start with an identity then populate off diagonal entries
-    pass
+    #pass
+    Sigma = np.eye(K)
+
+    for i in range(Sigma.shape[0]):
+        for j in range(Sigma.shape[1]):
+            Sigma[i][j]=np.exp(-abs(i-j)/corr_len)
+    return Sigma
+
 
 
 def gaussian_samples(N, K, Sigma=None):
@@ -45,7 +52,19 @@ def gaussian_samples(N, K, Sigma=None):
     #cov_error = utils.get_relative_error(sigma, sp.cov(X.T))
 
     # Start with an identity then populate off diagonal entries
-    pass
+    #pass
+    mean = []
+ 
+    for i in range(K):
+        mean.append(0)
+
+    newSigma=[]
+    newSigma=Sigma
+
+    if newSigma==None:
+        newSigma=np.eye(K)
+
+    return np.random.multivariate_normal(mean,newSigma,(N))    
 
 
 def fwd_model(X, w, E=0):

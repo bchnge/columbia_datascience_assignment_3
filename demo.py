@@ -20,7 +20,7 @@ import homework_03.src.linear_reg as linear_reg
 
 
 demo_simple = False
-demo_pandas = False
+demo_pandas = True
 demo_L2_regularization = False
 demo_pinv_regularization = False
 demo_cross_val = False

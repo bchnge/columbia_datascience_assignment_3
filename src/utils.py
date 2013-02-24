@@ -2,6 +2,7 @@ import numpy as np
 import scipy as sp
 import pandas as pd
 from numpy import linalg
+from numpy import sqrt
 from pandas import Series, DataFrame
 
 
@@ -11,7 +12,17 @@ def get_relative_error(estimate, reality):
 
     |estimate - reality|_F / |reality|_F  where F is the Frobenius norm.
     """
-    pass
+    #pass
+
+    numerator=0
+    denominator=0
+
+    for i in range(estimate.shape[0]):
+        numerator+=(estimate[i]-reality[i])**2
+        denominator+=(reality[i])**2
+
+    return sqrt(numerator)/sqrt(denominator)
+
 
 
 def process_input(X, Y):
