@@ -97,4 +97,21 @@ def _get_idx_list(N):
     >>> second_slice = X[idx_list[1][0]: idx_list[1][1]]
     """
     # Hint: Use lists and tuples
-    pass
+
+def _get_idx_list(N):
+    slice_size = N/5
+    print slice_size
+    fifth_size = N - 4*slice_size 
+    item = [(x, x+ slice_size) for x in range(N+1)]
+    print item
+    idx = 0
+    for x in enumerate(item):
+        if x[0] % slice_size != 0:
+            del item[idx]
+        else:
+            idx+=1
+            
+    item = item[0:4]
+    item.append((N-fifth_size, N)) 
+
+    return item
