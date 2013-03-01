@@ -17,6 +17,8 @@ import homework_03.src.simulator as simulator
 """
 """
 
+EPS = 1e-10
+
 
 class TestLinearReg(unittest.TestCase):
     """
@@ -79,7 +81,7 @@ class TestLinearReg(unittest.TestCase):
         assert_allclose(result, benchmark, atol=1e-3)
 
     def test_solve_pinv_4(self):
-        result = linear_reg._solve_pinv(self.singmx, self.Y, 0)
+        result = linear_reg._solve_pinv(self.singmx, self.Y, EPS)
         benchmark = np.array([[  26.5 ], [ 26.5 ]])
         assert_allclose(result, benchmark, atol=1e-3)
 
