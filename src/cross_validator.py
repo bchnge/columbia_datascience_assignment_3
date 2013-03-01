@@ -75,8 +75,13 @@ def _get_xy_traincv(X, Y, istart, istop):
     The tuple (Xtrain, Xcv, Ytrain, Ycv)
     """
     # Hint:  Use np.concatenate
-    pass
-
+    
+    Xtrain = X[istart:istop, :]
+    Ytrain = Y[istart:istop, :]
+    
+    Xcv = np.concatenate((X[:istart,:], X[istop:,:]))
+    Ycv = np.concatenate((Y[:istart,:], Y[istop:,:]))
+    return [(Xtrain, Xcv, Ytrain, Ycv)]
 
 def _get_idx_list(N):
     """
@@ -93,7 +98,7 @@ def _get_idx_list(N):
     >>> idx_list = _get_idx_list(12)
     >>> print idx_list
     [(0, 2), (2, 4), (4, 6), (6, 8), (8, 12)]
-    >>> first_slice = X[idx_list[0][0]: idx_list[0][1]]
+    >>> first_slice = X[idx_list[0][0]: idx_list[0][1]]		
     >>> second_slice = X[idx_list[1][0]: idx_list[1][1]]
     """
     # Hint: Use lists and tuples
@@ -103,7 +108,6 @@ def _get_idx_list(N):
     print slice_size
     fifth_size = N - 4*slice_size 
     item = [(x, x+ slice_size) for x in range(N+1)]
-    print item
     idx = 0
     for x in enumerate(item):
         if x[0] % slice_size != 0:
