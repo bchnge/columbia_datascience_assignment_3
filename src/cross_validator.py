@@ -6,6 +6,8 @@ import homework_03.src.linear_reg as linear_reg
 import homework_03.src.simulator as simulator
 import homework_03.src.utils as utils
 
+
+
 """
 Module for performing 5-fold cross validation over a one-dimensional parameter
 delta.
@@ -51,6 +53,21 @@ Values of delta to use
         # _get_xy_traincv
         # utils.get_relative_error
         # simulator.fwd_model
+
+        for fold in fold_idx_list:
+            data = _get_xy_traincv(X, Y, fold[0], fold[1])
+
+            Xtrain = np.array(data[0][:])
+            Xcv = np.array(data[1][:])
+            Ytrain = np.array(data[2][:])
+            Ycv = np.array(data[3][:])
+
+            w_train = linear_reg.fit(Xtrain,Ytrain, delta = delta)
+            estimate_train = simulator.fwd_model(Xtrain, w_train, E=0)
+            train_errs_4_this_delta.append(utils.get_relative_error(estimate_train, Ytrain))
+
+            estimate_cv = simulator.fwd_model(Xcv, w_train, E=0)
+            cv_errs_4_this_delta.append(utils.get_relative_error(estimate_cv, Ycv))
 
         gof.ix[delta, 'cv_error'] = np.mean(cv_errs_4_this_delta)
         gof.ix[delta, 'train_error'] = np.mean(train_errs_4_this_delta)
